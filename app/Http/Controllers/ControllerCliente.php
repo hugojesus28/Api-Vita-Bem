@@ -36,6 +36,14 @@ class ControllerCliente extends Controller
      */
     public function storeApi(Request $request)
     {
+        $nomeImagem = null;
+
+        if ($request->hasFile('imagemUsuario') && $request->file('imagemUsuario')->isValid()) {
+            $extensao = $request->file('imagemUsuario')->getClientOriginalExtension();
+            $nomeImagem = time() . '_' . uniqid() . '.' . $extensao;
+            $request->file('imagemUsuario')->move(public_path('img/users/fotosUsers'), $nomeImagem);
+        }
+
         $usuarios = Usuario::create([
             'nome_usuario' => $request->nomeUsuario,
             'email_usuario' => $request->emailUsuario,
@@ -46,9 +54,8 @@ class ControllerCliente extends Controller
             'data_nascimento_usuario' => $request->dataNascimentoUsuario,
             'hipertenso_usuario' => $request->hipertensoUsuario,
             'diabetico_usuario' => $request->diabeticoUsuario,
-            'img_usuario' => $request->imgUsuario,
-            'created_at' => now(),
-            'updated_at' => now()
+            'img_usuario' => $nomeImagem,
+            'created_at' => now()
         ]);
 
         return response()->json([
@@ -68,7 +75,7 @@ class ControllerCliente extends Controller
     public function showApi($id)
     {
         
-        $usuario = Usuario::all()->where('id', $id);
+        $usuario = Usuario::where('id', '=', $id)->first();
 
         return response()->json([
             'mensagem' => 'usuario cadastrado',
@@ -98,7 +105,22 @@ class ControllerCliente extends Controller
      */
     public function updateApi(Request $request, $id)
     {
-        $usuario = Usuario::where('id', $id)->update([
+        $usuario = Usuario::find($id);
+
+
+       if ($request->hasFile('imgUsuario')) { 
+                // Remove foto antiga se existir
+                if ($usuario->img_usuario && file_exists(public_path('img/users/fotosUsers/' . $usuario->img_usuario))) {
+                    unlink(public_path('img/users/fotosUsers' . $usuario->img_usuario));
+                }
+
+                $file = $request->file('imgUsuario'); // Pega o arquivo
+                $extensao = $file->getClientOriginalExtension();
+                $nomeImagem = 'usuario_' . time() . '.' . $extensao;
+                $file->move(public_path('img/users/fotosUsers'), $nomeImagem); // Salva
+                $fotoUsuario = $nomeImagem; // Atualiza no banco
+            }
+        $usuario->update([
             'nome_usuario' => $request->nomeUsuario,
             'email_usuario' => $request->emailUsuario,
             'senha_usuario' =>  $request->senhaUsuario,
@@ -108,7 +130,7 @@ class ControllerCliente extends Controller
             'data_nascimento_usuario' => $request->dataNascimentoUsuario,
             'hipertenso_usuario' => $request->hipertensoUsuario,
             'diabetico_usuario' => $request->diabeticoUsuario,
-            'img_usuario' => $request->imgUsuario,
+            'img_usuario' => $fotoUsuario,
             'updated_at' => now()
         ]); 
 
@@ -133,5 +155,21 @@ class ControllerCliente extends Controller
             'message' => 'dados excluidos',
             'code' => 200
         ]);
+    }
+
+    public function selectUserLogin($email){
+
+        $usuario = Usuario::where('email_usuario','=', $email)->first();
+
+        return response()->json([
+            'Sucesso' => true,
+            'dados' => $usuario,
+            'code' => 200,
+            'mensagem' => "dados encontrados com Sucesso!!"
+
+        ]);
+
+
+
     }
 }
