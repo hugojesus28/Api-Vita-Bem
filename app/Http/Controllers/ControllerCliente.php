@@ -107,7 +107,7 @@ class ControllerCliente extends Controller
     {
         $usuario = Usuario::find($id);
 
-
+        $fotoUsuario = null;
        if ($request->hasFile('imgUsuario')) { 
                 // Remove foto antiga se existir
                 if ($usuario->img_usuario && file_exists(public_path('img/users/fotosUsers/' . $usuario->img_usuario))) {

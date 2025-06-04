@@ -37,7 +37,7 @@ class RemedioController extends Controller
      */
     public function store(Request $request)
     {
-
+     
         $nomeImagem = null;
 
         if ($request->hasFile('imagemRemedio') && $request->file('imagemRemedio')->isValid()) {
@@ -51,12 +51,16 @@ class RemedioController extends Controller
             'horario' => $request->horario,
             'desc' => $request->desc,
             'termino' => $request->termino,
+            'idUsuario' => $request->idUsuario,
+            'dias' => intval($request->dias),
             'img' => $nomeImagem,
             'created_at' => now(),
             'updated_at' => now()
         ]);
         return response()->json([
-            'mensagem'=>'Remedio cadastrado'
+            'mensagem'=>'Remedio cadastrado',
+            'remedio' => $insert,
+            'code' => 200
         ]);
     }
 
@@ -68,10 +72,12 @@ class RemedioController extends Controller
      */
     public function show($id)
     {
-        $remedios = remedio::find($id);
+        $remedios = remedio::where('idUsuario' , $id)->get();
 
         return response()->json([
-            'remedios'=> $remedios
+            'remedios'=> $remedios,
+            'id usuario logado' => $id,
+            'code' => 200,
         ]);
         
     }
@@ -85,8 +91,8 @@ class RemedioController extends Controller
     public function edit(Request $request,$id)
     {
          $Remedio = remedio::find($id);
-        $fotoRemedio = null;
-       if ($request->hasFile('imgRemedio')) { 
+        $fotoRemedio = $request->imgRemedio ?? $Remedio->img; 
+       if ($request->hasFile('imgRemedio') && $request->imgRemedio != $Remedio->img) { 
                 // Remove foto antiga se existir
     
                 if ($Remedio->img && file_exists(public_path('img/users/fotosRemedios/' . $Remedio->img))) {

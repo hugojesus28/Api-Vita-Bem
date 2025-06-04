@@ -11,7 +11,7 @@ class Remedio extends Model
     protected $table = 'tb_remedios';
 
     protected $fillable =[
-        'id','nome','horario','desc','img','termino','created_at', 'updated_at'
+        'id','nome','horario','desc','dias', 'idUsuario','img','termino','created_at', 'updated_at'
 
     ];
     public $timestamps = false;

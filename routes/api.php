@@ -29,7 +29,7 @@ Route::get('/usuario/login/{email}', [ControllerCliente::class, 'selectUserLogin
 
 Route::post('/remedio', action: [remedioController::class, 'store'])->name('remedio.store');
 Route::get('/remedio', action: [remedioController::class, 'index'])->name('remedio.index');
-Route::get('/remedio/{id}', action: [remedioController::class, 'index'])->name('remedio.index');
+Route::get('/remedio/{id}', action: [remedioController::class, 'show'])->name('remedio.index');
 Route::post('/remedio/{id}', action: [remedioController::class, 'edit'])->name('remedio.edit');
 Route::delete('/remedio/{id}', action: [remedioController::class, 'destroy'])->name('remedio.destroy');
 
