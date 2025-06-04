@@ -34,5 +34,5 @@ Route::post('/remedio/{id}', action: [remedioController::class, 'edit'])->name('
 Route::delete('/remedio/{id}', action: [remedioController::class, 'destroy'])->name('remedio.destroy');
 
 
-Route::get('/remedioa/{pesquisa}', action: [remedioController::class, 'pesquisar'])->name('remedio.pesquisar');
+Route::get('/remedioa/{pesquisa}/{id}', action: [remedioController::class, 'pesquisar'])->name('remedio.pesquisar');
 

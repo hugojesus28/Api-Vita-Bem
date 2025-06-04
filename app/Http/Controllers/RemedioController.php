@@ -148,9 +148,9 @@ class RemedioController extends Controller
             'code' => 200
         ]);
     }
-    public function pesquisar($pesquisa)
+    public function pesquisar($pesquisa, $id)
     {
-        $remedio = remedio::where('nome','like',"%$pesquisa%")->get();
+        $remedio = remedio::where('nome','like',"%$pesquisa%")->where('idUsuario', $id)->get();
         return $remedio;
     }
 }

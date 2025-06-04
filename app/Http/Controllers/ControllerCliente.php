@@ -137,7 +137,8 @@ class ControllerCliente extends Controller
         return response()->json([
             'message' => 'Cliente atualizado com sucesso',
             'code' => 200,
-            'usuario' => $usuario
+            'usuario' => $usuario,
+            'sucesso' => true
         ]);
     }
 
