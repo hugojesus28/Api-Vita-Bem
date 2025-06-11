@@ -93,7 +93,6 @@ class RemedioController extends Controller
          $Remedio = remedio::find($id);
         $fotoRemedio = $request->imgRemedio ?? $Remedio->img; 
        if ($request->hasFile('imgRemedio') && $request->imgRemedio != $Remedio->img) { 
-                // Remove foto antiga se existir
     
                 if ($Remedio->img && file_exists(public_path('img/users/fotosRemedios/' . $Remedio->img))) {
                     unlink(public_path('img/users/fotosRemedios/' . $Remedio->img));

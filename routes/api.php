@@ -3,7 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControllerCliente;
+use App\Http\Controllers\DiabeteController;
 use App\Http\Controllers\RemedioController;
+use App\Http\Controllers\PressaoController;
+use App\Models\Diabete;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +35,15 @@ Route::get('/remedio', action: [remedioController::class, 'index'])->name('remed
 Route::get('/remedio/{id}', action: [remedioController::class, 'show'])->name('remedio.index');
 Route::post('/remedio/{id}', action: [remedioController::class, 'edit'])->name('remedio.edit');
 Route::delete('/remedio/{id}', action: [remedioController::class, 'destroy'])->name('remedio.destroy');
-
-
 Route::get('/remedioa/{pesquisa}/{id}', action: [remedioController::class, 'pesquisar'])->name('remedio.pesquisar');
 
+
+Route::get('/pressao/{id}', [PressaoController::class, 'show'])->name('pressao.show');
+Route::post('/pressao', [PressaoController::class, 'store'])->name('pressao.store');
+Route::post('/pressao/{id}', [PressaoController::class, 'update'])->name('pressao.update');
+Route::delete('/pressao/{id}', [PressaoController::class, 'destroy'])->name('pressao.destroy');
+
+Route::get('/diabete/{id}', [DiabeteController::class, 'show']);
+Route::post('/diabete', [DiabeteController::class, 'store'])->name('diabete.store');
+Route::post('/diabete/{id}', [DiabeteController::class, 'update'])->name('diabete.update');
+Route::delete('/diabete/{id}', [DiabeteController::class, 'destroy'])->name('diabete.destroy');

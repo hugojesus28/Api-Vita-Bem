@@ -109,9 +109,8 @@ class ControllerCliente extends Controller
 
         $fotoUsuario = null;
        if ($request->hasFile('imgUsuario')) { 
-                // Remove foto antiga se existir
                 if ($usuario->img_usuario && file_exists(public_path('img/users/fotosUsers/' . $usuario->img_usuario))) {
-                    unlink(public_path('img/users/fotosUsers' . $usuario->img_usuario));
+                    unlink(public_path('img/users/fotosUsers/' . $usuario->img_usuario));
                 }
 
                 $file = $request->file('imgUsuario'); // Pega o arquivo
